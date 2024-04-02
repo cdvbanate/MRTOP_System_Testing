@@ -56,8 +56,12 @@ class OnboardingRequest extends BaseWidget
                             'Not Yet Started' => 'danger',
                             'Ongoing' => 'warning',
                             'Completed' => 'success',
-                        }),
-                    Tables\Columns\TextColumn::make('Remarks'),     
+                        }), 
+                    Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->label('Date Requested')
+                    ->sortable(), 
+                    Tables\Columns\TextColumn::make('Remarks') 
                 ]);  
             }
     }
