@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Models\User;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Request extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $guarded =[];
 
@@ -30,6 +33,14 @@ class Request extends Model
         'RequestStatus',
         'TrainingStatus',
         'Remarks',]; 
+
+
+        public function getActivitylogOptions(): LogOptions
+        {
+            return LogOptions::defaults()
+            ->logOnly($this->fillable);
+            // Chain fluent methods for configuration options
+        }
     
         public function user():BelongsTo
         {

@@ -166,6 +166,8 @@ class RequestResource extends Resource
                                 'Approved' => 'Approved',
                              
                             ]),
+
+                            
                         Forms\Components\Select::make('TrainingStatus')
 
                             ->label('Training Status')
@@ -175,7 +177,7 @@ class RequestResource extends Resource
                                 'Not Yet Started' => 'Not Yet Started',
                                 'Ongoing' => 'Ongoing',
                                 'Completed' => 'Completed',
-                            ]),
+                            ]) ->disabled('RequestStatus' === 'For Verification'),
 
                         Forms\Components\TextInput::make('Remarks')
                             ->label('Remarks')
