@@ -4,14 +4,18 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Panel;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
+
+    use LogsActivity;
 
 
     const ROLE_ADMIN = 'ADMIN';
@@ -63,6 +67,13 @@ class User extends Authenticatable implements FilamentUser
 
 
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly($this->fillable);
+        // Chain fluent methods for configuration options
+    }
 
     /**
      * The attributes that should be hidden for serialization.
