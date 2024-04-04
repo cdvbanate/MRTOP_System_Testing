@@ -18,7 +18,6 @@ use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\RequestResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\RequestResource\RelationManagers;
-// use Spatie\Activitylog\Models\Activity;
 
 class RequestResource extends Resource
 {
