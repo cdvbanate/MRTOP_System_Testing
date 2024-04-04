@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
 use App\Models\Request;
 use Filament\Forms\Form;
@@ -17,6 +18,7 @@ use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\RequestResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\RequestResource\RelationManagers;
+// use Spatie\Activitylog\Models\Activity;
 
 class RequestResource extends Resource
 {
@@ -30,23 +32,25 @@ class RequestResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $userOptions = auth()->user()->isAdmin() ?
+        User::pluck('name', 'id')->toArray() :
+        [Auth::user()->id => Auth::user()->name];
+
         return $form
             ->schema([
+               
                 Forms\Components\Section::make('LMS Administrator Status')
-                    // ->disabledOn(auth()->user()->isAdmin() ? [] : ['create'])
-                    ->description('LMS Administrator Details')
-                    ->schema([
-                        Forms\Components\Select::make('user_id')
-                            ->options([
-                                Auth::user()->id => Auth::user()->name
-                            ])
-                            ->disabledOn(auth()->user()->isAdmin() ? [] : ['edit'])
-                            ->required()
-                            ->native(false)
-                            ->label('LMS Administrator')
-                            ->default(Auth::user()->id),
-                    ]),
-
+                ->description('LMS Administrator Details')
+                ->schema([
+                    Forms\Components\Select::make('user_id')
+                        ->options($userOptions)
+                        ->disabledOn(auth()->user()->isAdmin() ? [] : ['edit'])
+                        ->required()
+                        ->native(false)
+                        ->label('LMS Administrator')
+                        ->default(Auth::user()->id),
+                ]),
+            
                 Forms\Components\Section::make('TESDA Technology Institutions Information')
                     // ->disabledOn('create')
                     ->schema([
@@ -172,6 +176,7 @@ class RequestResource extends Resource
 
                             ->label('Training Status')
                             ->preload()
+                            ->required()
                             ->native(false)
                             ->options([
                                 'Not Yet Started' => 'Not Yet Started',
