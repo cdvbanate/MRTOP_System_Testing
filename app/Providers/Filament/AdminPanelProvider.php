@@ -44,6 +44,13 @@ class AdminPanelProvider extends PanelProvider
             ->collapsibleNavigationGroups(false)
             // ->sidebarFullyCollapsibleOnDesktop()
             ->topNavigation()
+
+            ->renderHook(
+                // This line tells us where to render it
+                'panels::body.end',
+                // This is the view that will be rendered
+                fn () => view('customFooter'),
+            )
           
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
