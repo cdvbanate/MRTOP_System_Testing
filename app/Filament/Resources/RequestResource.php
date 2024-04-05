@@ -198,12 +198,17 @@ class RequestResource extends Resource
 
         ->modifyQueryUsing(function (Builder $query) {
             $user = Auth::user();
+        
             if ($user->role === 'ADMIN') {
-                return; // Don't modify query for ADMIN users
+                return; // No filtering for ADMIN users
+            } elseif ($user->role === 'REGIONAL ADMIN') {
+                $regionName = $user->region_name; // Assuming you have a "region_name" attribute for REGIONAL_ADMIN users
+                $query->where('region_name', $regionName);
+            } else {
+                $userId = $user->id;
+                $query->where('user_id', $userId);
             }
         
-            $userId = $user->id;
-            $query->where('user_id', $userId);
         })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')

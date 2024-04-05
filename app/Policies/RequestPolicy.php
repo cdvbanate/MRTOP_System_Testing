@@ -13,7 +13,7 @@ class RequestPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin() || $user->isEditor();
+        return $user->isAdmin() || $user->isEditor() || $user->isRegional();
     }
 
     /**
@@ -21,7 +21,7 @@ class RequestPolicy
      */
     public function view(User $user, Request $request): bool
     {
-        return $user->isAdmin() || $user->isEditor();
+        return $user->isAdmin() || $user->isEditor() || $user->isRegional();
     }
 
     /**

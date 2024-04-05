@@ -17,28 +17,19 @@ class User extends Authenticatable implements FilamentUser
 
     use LogsActivity;
 
-
     const ROLE_ADMIN = 'ADMIN';
     const ROLE_EDITOR = 'LMS ADMIN';
-    const ROLE_USER = 'USER';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-
+    const ROLE_USER = 'REGIONAL ADMIN';
      const ROLES =[
         self::ROLE_ADMIN => 'ADMIN',
         self::ROLE_EDITOR => 'LMS ADMIN',
-        // self::ROLE_USER => 'User',
+        self::ROLE_USER => 'REGIONAL ADMIN',
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
-       return $this->isAdmin() || $this->isEditor();
+       return $this->isAdmin() || $this->isEditor() || $this->isRegional();
     }
-
 
     public function isAdmin()
     {
@@ -48,11 +39,10 @@ class User extends Authenticatable implements FilamentUser
     public function isEditor(){
         
         return $this->role === self::ROLE_EDITOR;
-
     }
 
-    public function isUser(){
-        $this->role === self::ROLE_USER;
+    public function isRegional(){
+        return $this->role === self::ROLE_USER;
     }
    
 
