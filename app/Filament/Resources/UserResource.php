@@ -76,7 +76,6 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('province_name')
                     ->label('Provincial Office')
                     ->required()
-                    
                     ->maxLength(255),
                     
                 Forms\Components\TextInput::make('institution_name')
