@@ -31,6 +31,7 @@ class RequestResource extends Resource
 
     public static function form(Form $form): Form
     {
+        
         $userOptions = auth()->user()->isAdmin() ?
         User::pluck('name', 'id')->toArray() :
         [Auth::user()->id => Auth::user()->name];
