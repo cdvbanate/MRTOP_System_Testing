@@ -280,7 +280,7 @@ class RequestResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort(fn($query) => $query->orderBy('RequestStatus', 'desc'))
             ->filters([
                 //
             ])

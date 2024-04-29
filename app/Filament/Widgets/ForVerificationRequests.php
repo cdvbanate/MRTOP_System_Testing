@@ -65,6 +65,7 @@ class ForVerificationRequests extends BaseWidget
                 }),
 
                 Tables\Columns\TextColumn::make('created_at')
+                ->date()
                 ->label('Date Requested')
                 ->sortable(), 
                 // Tables\Columns\TextColumn::make('Remarks') 
