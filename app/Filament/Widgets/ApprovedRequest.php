@@ -6,6 +6,7 @@ use Filament\Tables;
 use App\Models\Request;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
 
@@ -40,9 +41,9 @@ class ApprovedRequest extends BaseWidget
                     ->label('Request Status')
                     ->color(fn (string $state): string => match ($state) {
                         'For Verification' => 'warning',
-                        'reviewing' => 'danger',
+                        
                         'Approved' => 'success',
-                        'Decline' => 'danger',
+                   
                     }),
                 Tables\Columns\TextColumn::make('TrainingStatus')
                 ->label('Training Status')
@@ -55,8 +56,30 @@ class ApprovedRequest extends BaseWidget
                 Tables\Columns\TextColumn::make('created_at')
                 ->label('Date Requested')
                 ->sortable(), 
+
+                
                
-            ]);  
+            ])
+            ->filters([
+
+
+                SelectFilter::make('RequestStatus')
+                ->label('Filter By Request Status')
+                ->preload()
+                ->options([
+                    'For Verification' => 'For Verification',
+                    'Approved' => 'Approved',
+                ]),
+
+                SelectFilter::make('TrainingStatus')
+                    ->label('Filter By Training Status')
+                    ->preload()
+                    ->options([
+                        'Not Yet Started' => 'Not Yet Started',
+                        'Ongoing' => 'Ongoing',
+                        'Completed' => 'Completed',
+                    ]),
+            ]);
             
        
         

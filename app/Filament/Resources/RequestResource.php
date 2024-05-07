@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\IconEntry;
@@ -282,7 +283,10 @@ class RequestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])->defaultSort(fn($query) => $query->orderBy('RequestStatus', 'desc'))
             ->filters([
-                //
+                // SelectFilter::make('created_at')
+                //     ->label('Filter By Year')
+                //     ->preload()
+                //     ->indicator('Year'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
