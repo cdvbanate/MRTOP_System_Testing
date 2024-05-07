@@ -61,16 +61,6 @@ class ApprovedRequest extends BaseWidget
                
             ])
             ->filters([
-
-
-                SelectFilter::make('RequestStatus')
-                ->label('Filter By Request Status')
-                ->preload()
-                ->options([
-                    'For Verification' => 'For Verification',
-                    'Approved' => 'Approved',
-                ]),
-
                 SelectFilter::make('TrainingStatus')
                     ->label('Filter By Training Status')
                     ->preload()
