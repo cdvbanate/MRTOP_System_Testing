@@ -283,10 +283,23 @@ class RequestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])->defaultSort(fn($query) => $query->orderBy('RequestStatus', 'desc'))
             ->filters([
-                // SelectFilter::make('created_at')
-                //     ->label('Filter By Year')
-                //     ->preload()
-                //     ->indicator('Year'),
+
+                SelectFilter::make('RequestStatus')
+                ->label('Filter By Request Status')
+                ->preload()
+                ->options([
+
+                    'For Verification' => 'For Verification',
+                    'Approved' => 'Approved',
+                ]),
+                SelectFilter::make('TrainingStatus')
+                    ->label('Filter By Training Status')
+                    ->preload()
+                    ->options([
+                        'Not Yet Started' => 'Not Yet Started',
+                        'Ongoing' => 'Ongoing',
+                        'Completed' => 'Completed',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
