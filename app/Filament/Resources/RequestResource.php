@@ -238,8 +238,8 @@ class RequestResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('NameOfTrainer')
                     ->label('Name of Trainer')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
+                 
                 Tables\Columns\TextColumn::make('NTTCNumber')
                     ->label('NTTC Number')
                     ->searchable()
