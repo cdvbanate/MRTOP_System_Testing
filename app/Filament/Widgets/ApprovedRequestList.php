@@ -6,6 +6,7 @@ use Filament\Tables;
 use App\Models\Request;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Filament\Resources\Components\Tab;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -72,7 +73,6 @@ class ApprovedRequestList extends BaseWidget
        
         
     }
-
     public static function canView(): bool
     {
         return auth()->user()->isAdmin();
