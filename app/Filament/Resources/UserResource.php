@@ -51,6 +51,7 @@ class UserResource extends Resource
                     Forms\Components\Select::make('region_name')
                     ->label('Region')
                     ->options([
+                        
                         'NCR' => 'NCR',
                         'CAR' => 'CAR',
                         'Region I' => 'Region I',
