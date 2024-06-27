@@ -11,7 +11,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
 
-class ApprovedRequestList extends BaseWidget
+class CompletedTrainingList extends BaseWidget
 {
     protected static ?int $sort = 4;
 
@@ -20,7 +20,7 @@ class ApprovedRequestList extends BaseWidget
     {
         return $table
             ->query(Request::query())
-            ->query(Request::query()->where('RequestStatus', 'Approved')) 
+            ->query(Request::query()->where('TrainingStatus', 'Completed')) 
             ->defaultSort('created_at', 'desc')
             ->modifyQueryUsing(function (Builder $query) {
                 $user = Auth::user();
@@ -37,23 +37,14 @@ class ApprovedRequestList extends BaseWidget
                 ->label('Trainer'),
                 Tables\Columns\TextColumn::make('targetStart'),
                 Tables\Columns\TextColumn::make('targetEnd'),
-                Tables\Columns\TextColumn::make('RequestStatus')
+                Tables\Columns\TextColumn::make('TrainingStatus')
+                ->label('Training Status')
                 ->badge()
-                    ->label('Request Status')
-                    ->color(fn (string $state): string => match ($state) {
-                        'For Verification' => 'warning',
-                     
-                        'Approved' => 'success',
-                 
-                    }),
-                // Tables\Columns\TextColumn::make('TrainingStatus')
-                // ->label('Training Status')
-                // ->badge()
-                // ->color(fn (string $state): string => match ($state) {
-                //     'Not Yet Started' => 'danger',
-                //     'Ongoing' => 'warning',
-                //     'Completed' => 'success',
-                // }),
+                ->color(fn (string $state): string => match ($state) {
+                    'Not Yet Started' => 'danger',
+                    'Ongoing' => 'warning',
+                    'Completed' => 'success',
+                }),
                 Tables\Columns\TextColumn::make('created_at')
                 ->label('Date Requested')
                 ->sortable(), 
