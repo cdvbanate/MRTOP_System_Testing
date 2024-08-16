@@ -88,8 +88,8 @@ class DownloadResource extends Resource
             ->schema([
             Section::make('Downloadable File Information')
               ->schema([
-                TextEntry::make('DocumentName')->label('Document Name'),
-                TextEntry::make('Link')->label('Downloadble Link')
+                TextEntry::make('Download')->label('Document Name'),
+                TextEntry::make('LinkToDownload')->label('Downloadable Link')
                 ->copyable()
                 ->copyMessage('Copied!')
                 ->copyMessageDuration(1500),            
