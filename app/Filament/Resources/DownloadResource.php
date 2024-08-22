@@ -35,10 +35,12 @@ class DownloadResource extends Resource
                 ->description('Please provide complete data here.')
                 ->schema([  
                 Forms\Components\TextInput::make('Download')
+                    ->label('Document Name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('LinkToDownload')
                     ->required()
+                    ->label('Link to Access the File')
                     ->maxLength(255),
                     ])
             ]);
@@ -49,8 +51,11 @@ class DownloadResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('Download')
+
+                    ->label('Document Name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('LinkToDownload')
+                    ->label('Link to Access the File')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
