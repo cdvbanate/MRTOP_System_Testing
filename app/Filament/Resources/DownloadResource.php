@@ -51,7 +51,6 @@ class DownloadResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('Download')
-
                     ->label('Document Name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('LinkToDownload')
@@ -69,6 +68,7 @@ class DownloadResource extends Resource
             ->filters([
                 //
             ])
+            ->defaultSort('Download', 'asc') // Set default sorting by Document Name in ascending order
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
