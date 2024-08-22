@@ -94,14 +94,16 @@ class DownloadResource extends Resource
             Section::make('Downloadable File Information')
               ->schema([
                 TextEntry::make('Download')->label('Document Name'),
-                TextEntry::make('LinkToDownload')->label('Downloadable Link')
+                TextEntry::make('LinkToDownload')->label('Link to Access the File')
                 ->copyable()
                 ->copyMessage('Copied!')
-                ->copyMessageDuration(1500),            
+                ->copyMessageDuration(1500)
+                ->icon('heroicon-m-link')
+                ->iconColor('primary')
+                    
               ])
             ]);
     }
-
 
     public static function getPages(): array
     {
