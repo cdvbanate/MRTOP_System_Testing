@@ -16,4 +16,9 @@ class ListDownloads extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected ?string $heading = 'Available Documents';
+    protected ?string $subheading = 'List of MRTOP Documents';
+
+
 }

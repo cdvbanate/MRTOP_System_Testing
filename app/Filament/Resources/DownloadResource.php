@@ -35,10 +35,12 @@ class DownloadResource extends Resource
                 ->description('Please provide complete data here.')
                 ->schema([  
                 Forms\Components\TextInput::make('Download')
+                    ->label('Document Name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('LinkToDownload')
                     ->required()
+                    ->label('Link to Access the File')
                     ->maxLength(255),
                     ])
             ]);
@@ -49,8 +51,10 @@ class DownloadResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('Download')
+                    ->label('Document Name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('LinkToDownload')
+                    ->label('Link to Access the File')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -64,6 +68,7 @@ class DownloadResource extends Resource
             ->filters([
                 //
             ])
+            ->defaultSort('Download', 'asc') // Set default sorting by Document Name in ascending order
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -89,14 +94,16 @@ class DownloadResource extends Resource
             Section::make('Downloadable File Information')
               ->schema([
                 TextEntry::make('Download')->label('Document Name'),
-                TextEntry::make('LinkToDownload')->label('Downloadable Link')
+                TextEntry::make('LinkToDownload')->label('Link to Access the File')
                 ->copyable()
                 ->copyMessage('Copied!')
-                ->copyMessageDuration(1500),            
+                ->copyMessageDuration(1500)
+                ->icon('heroicon-m-link')
+                ->iconColor('primary')
+                    
               ])
             ]);
     }
-
 
     public static function getPages(): array
     {
