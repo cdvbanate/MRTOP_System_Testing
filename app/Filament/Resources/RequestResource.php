@@ -2,23 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
+use App\Filament\Resources\RequestResource\Pages;
+use App\Filament\Resources\RequestResource\RelationManagers;
+use App\Mail\Hellomail;
 use App\Models\Request;
+use App\Models\User;
+use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
+use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\TextEntry;
-use App\Filament\Resources\RequestResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\RequestResource\RelationManagers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class RequestResource extends Resource
 {
@@ -33,10 +36,11 @@ class RequestResource extends Resource
     public static function form(Form $form): Form
     {
         
+        $loggedInUser = Auth::user(); // Get the currently logged-in user
+
         $userOptions = auth()->user()->isAdmin() ?
         User::pluck('name', 'id')->toArray() :
         [Auth::user()->id => Auth::user()->name];
-
         return $form
             ->schema([
                
@@ -185,12 +189,23 @@ class RequestResource extends Resource
                                 'Completed' => 'Completed',
                             ]) ->disabled('RequestStatus' === 'For Verification'),
 
-                        Forms\Components\TextInput::make('Remarks')
+                        Forms\Components\TextArea::make('Remarks')
                             ->label('Remarks')
-                            ->maxLength(255)
-                            ->placeholder('Sample Message')
+                            ->maxLength(1000)
+                            ->rows(5)
+                            ->placeholder('Put remarks here')
+                            ]),
 
-                    ])
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('email')
+                                    ->label('LMS Email Address')
+                                    ->default($loggedInUser->email) // Automatically set to the logged-in user's email
+                                    ->disabled(),
+                            ])
+                            ->columns(1)
+                            //->hidden(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord) // Hide during creation if necessary
+                            ->hidden(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord) // Show during edit
             ]);
     }
 
@@ -301,6 +316,7 @@ class RequestResource extends Resource
                         'Completed' => 'Completed',
                     ]),
             ])
+            
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -385,4 +401,19 @@ class RequestResource extends Resource
             'edit' => Pages\EditRequest::route('/{record}/edit'),
         ];
     }
+
+
+public static function afterCreate(Request $request)
+{
+    // Fetch the user associated with this request
+    $user = User::find($request->user_id);
+
+    // Check if the user exists and send the email
+    if ($user) {
+        Mail::to($user->email)->send(new Hellomail($request));
+        Log::info('Email sent to user', ['email' => $user->email]);
+    } else {
+        Log::warning('User not found for request', ['request_id' => $request->id]);
+    }
+}
 }

@@ -54,8 +54,6 @@ class User extends Authenticatable implements FilamentUser
         'province_name',
         'institution_name',
         'role',
-
-
     ];
 
     public function getActivitylogOptions(): LogOptions

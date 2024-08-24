@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Mail\Hellomail;
 use App\Models\User;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Request extends Model
 {
@@ -51,5 +55,51 @@ class Request extends Model
         {
             return $this->belongsTo(Qualification::class);
         }
-    
-}
+
+
+        protected static function booted()
+        {
+            // Trigger email on creation
+            static::created(function ($request) {
+                Log::info('New request created', ['request_id' => $request->id]);
+        
+                // Get the user associated with the request
+                $user = User::find($request->user_id);
+        
+                // Send email to the user who created the request
+                if ($user) {
+                    Mail::to($user->email)->send(new Hellomail($request, $user));
+                    Log::info('Email sent on creation to user', ['email' => $user->email]);
+                } else {
+                    Log::info('Email not sent on creation: User not found');
+                }
+            });
+        
+        
+            // Trigger email on update
+            static::updated(function ($request) {
+                Log::info('Request status updated', ['request_id' => $request->id]);
+        
+                // Get the user associated with the request
+                $user = User::find($request->user_id);
+        
+                // Check if the RequestStatus was changed
+                if ($request->isDirty('RequestStatus')) {
+                    $originalStatus = $request->getOriginal('RequestStatus'); // Original status before update
+                    $newStatus = $request->RequestStatus; // New status after update
+        
+                    Log::info('Request status changed', ['original_status' => $originalStatus, 'new_status' => $newStatus]);
+        
+                    // Send email based on status change
+                    if ($originalStatus !== $newStatus && $user) {
+                        Mail::to($user->email)->send(new Hellomail($request, $user));
+                        Log::info('Email sent on update to user', ['email' => $user->email]);
+                    } else {
+                        Log::info('No status change detected or user not found, no email sent');
+                    }
+                } else {
+                    Log::info('RequestStatus not dirty, no email sent');
+                }
+            });
+        }
+    }
