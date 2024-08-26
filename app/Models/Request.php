@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Mail\Hellomail;
+use App\Mail\MRTOP;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -68,7 +68,7 @@ class Request extends Model
         
                 // Send email to the user who created the request
                 if ($user) {
-                    Mail::to($user->email)->send(new Hellomail($request, $user));
+                    Mail::to($user->email)->send(new MRTOP($request, $user));
                     Log::info('Email sent on creation to user', ['email' => $user->email]);
                 } else {
                     Log::info('Email not sent on creation: User not found');
@@ -92,7 +92,7 @@ class Request extends Model
         
                     // Send email based on status change
                     if ($originalStatus !== $newStatus && $user) {
-                        Mail::to($user->email)->send(new Hellomail($request, $user));
+                        Mail::to($user->email)->send(new MRTOP($request, $user));
                         Log::info('Email sent on update to user', ['email' => $user->email]);
                     } else {
                         Log::info('No status change detected or user not found, no email sent');

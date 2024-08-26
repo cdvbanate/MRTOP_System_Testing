@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RequestResource\Pages;
 use App\Filament\Resources\RequestResource\RelationManagers;
-use App\Mail\Hellomail;
+use App\Mail\MRTOP;
 use App\Models\Request;
 use App\Models\User;
 use Filament\Forms;
@@ -49,12 +49,14 @@ class RequestResource extends Resource
                 ->schema([
                     Forms\Components\Select::make('user_id')
                         ->options($userOptions)
-                        ->disabledOn(auth()->user()->isAdmin() ? [] : ['edit'])
+                        ->disabledOn(!auth()->user()->isAdmin()) // Disable field if user is not an admin
                         ->required()
                         ->native(false)
                         ->label('LMS Administrator')
                         ->default(Auth::user()->id),
-                ]),
+                ])
+                ->columns(1),
+            
             
                 Forms\Components\Section::make('TESDA Technology Institutions Information')
                     // ->disabledOn('create')
@@ -410,7 +412,7 @@ public static function afterCreate(Request $request)
 
     // Check if the user exists and send the email
     if ($user) {
-        Mail::to($user->email)->send(new Hellomail($request));
+        Mail::to($user->email)->send(new MRTOP($request, $user));
         Log::info('Email sent to user', ['email' => $user->email]);
     } else {
         Log::warning('User not found for request', ['request_id' => $request->id]);

@@ -39,7 +39,7 @@
     <div class="container">
         <h1>Good day {{ $user->institution_name }},</h1>
 
-        <p>Thank you for submitting the requirements for <b>{{ $request->qualification->qualification_name }}</b>. As <b>{{ $user->institution_name }}</b> Administrators, you may now onboard the students in the TOP Multi-Regional TESDA Online Program. Please see the Onboarding Process below:</p>
+        <p>Thank you for submitting the requirements for <b>{{ $request->qualification->qualification_name }}</b>. As <b>{{ $user->institution_name }}</b> Administrators, you may now onboard the students in the Multi-Regional TESDA Online Program. Please see the Onboarding Process below:</p>
 
         <ol>
             <li>The TTI LMS Administrator shall set up the course site in their category within the Multi-Regional TOP:

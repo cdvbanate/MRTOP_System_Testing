@@ -1,6 +1,6 @@
 <?php
 
-use App\Mail\Hellomail;
+use App\Mail\MRTOP;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +16,6 @@ Route::get('/', function () {
 });
 
 Route::get('/', function () {
-    Mail::to('carlobanatesample@gmail.com')->send(new Hellomail());
+    Mail::to('carlobanatesample@gmail.com')->send(new MRTOP());
     return 'Email sent!';
 });
