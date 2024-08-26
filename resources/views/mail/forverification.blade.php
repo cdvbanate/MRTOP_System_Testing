@@ -42,7 +42,7 @@
         <p>Thank you for submitting your onboarding requirements for <b>{{ $request->qualification->qualification_name }}</b>.The technical team will review it and provide feedback once they’ve completed their assessment.</p>
 
         <p>Should you have any questions, feel free to contact us via the FB LMS Technical Support Group Chat.</p>
-        <p>Looping in this email Mr/Mrs<b>{{ $user->name }}</b> the LMS Administrator of <b>{{ $user->institution_name }}</b> </p>
+        <p>Looping in this email Mr/Ms<b>{{ $user->name }}</b> the LMS Administrator of <b>{{ $user->institution_name }}</b> </p>
 
         <p>Thank you!</p>
 
