@@ -35,40 +35,38 @@ class EgacResource extends Resource
 
             ->schema([
                 Forms\Components\Section::make('LMS Administrator Status')
-                    ->description('LMS Administrator Details')
-                    ->schema([
-                Forms\Components\Select::make('user_id')
-                            #->options($userOptions)
-                            #->disabledOn(!auth()->user()->isAdmin()) // Disable field if user is not an admin
-                            ->default($loggedInUser->name) // Automatically set to the logged-in user's email
-                                    ->disabled()
-                            ->required()
-                            ->native(false)
-                            ->label('LMS Administrator'),
-                            #->default(Auth::user()->id),
+    ->description('LMS Administrator Details')
+    ->schema([
+        Forms\Components\Select::make('user_id')
+                ->options([
+                    Auth::user()->id => Auth::user()->name
+                ])
+                ->disabledOn(auth()->user()->isAdmin() ? [] : ['edit']) // Disable field if user is not an admin
+                ->required()
+                ->native(false)
+                ->label('LMS Administrator')
+                ->default(Auth::user()->id),
+                
 
                 Forms\Components\Select::make('region_name')
-                            #->options([
-                                #Auth::user()->id => Auth::user()->region_name
-                            #])
-                            ->default($loggedInUser->region_name) // Automatically set to the logged-in user's email
-                                    ->disabled()
-                            #->disabledOn(auth()->user()->isAdmin() ? [] : ['edit'])
-                            ->required()
-                            ->native(false)
-                            ->label('Region')
-                            ->default(Auth::user()->region_name),
+                ->options([
+                    Auth::user()->id => Auth::user()->region_name
+                ])
+                ->disabledOn(auth()->user()->isAdmin() ? [] : ['edit'])
+                ->required()
+                ->native(false)
+                ->label('Region')
+                ->default(Auth::user()->region_name),
+                
                 Forms\Components\Select::make('institution_name')
-                            #->options([
-                             #   Auth::user()->id => Auth::user()->region_name
-                            #])
-                            #->disabledOn(auth()->user()->isAdmin() ? [] : ['edit'])
-                            ->default($loggedInUser->institution_name) // Automatically set to the logged-in user's email
-                                    ->disabled()
-                            ->required()
-                            ->native(false)
-                            ->label('Institution'),
-                            #->default(Auth::user()->region_name),
+                ->options([
+                    Auth::user()->id => Auth::user()->institution_name
+                ])
+                ->disabledOn(auth()->user()->isAdmin() ? [] : ['edit'])
+                ->required()
+                ->native(false)
+                ->label('TESDA Technology Institution')
+                ->default(Auth::user()->institution_name),
 
                 Forms\Components\Select::make('qualification_id')
                             ->label("Qualification")
@@ -96,15 +94,18 @@ class EgacResource extends Resource
                 Forms\Components\Section::make('Training Details')
                 ->description('Training Details')
                 ->schema([
-                Forms\Components\Select::make('Start Date')
+                    Forms\Components\Select::make('targetStart')
                     ->label("Start Date")
                     ->placeholder('Select Date')
                     ->options(function () use ($loggedInUser) {
-                        // Get the targetStart dates related to the logged-in user's requests
-                        return \App\Models\Request::where('user_id', $loggedInUser->id) // Filter by logged-in user
-                            ->pluck('targetStart', 'targetStart'); // Pluck the unique targetStart dates
+                        // Get unique targetStart dates for the logged-in user's requests
+                        return \App\Models\Request::where('user_id', $loggedInUser->id)
+                            ->pluck('targetStart', 'targetStart') // Pluck the targetStart dates
+                            ->toArray();  // Convert to array
                     })
-                    ->required(),
+                    ->required()
+                    ->default(null), // Default to null if no value is selected
+                
 
                     
                 Forms\Components\Select::make('targetEnd')
