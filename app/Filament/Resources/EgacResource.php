@@ -180,9 +180,11 @@ class EgacResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('qualification.id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('qualification_id')
+                ->label('Qualification')
+                ->getStateUsing(function ($record) {
+                    return $record->qualification->qualification_name; // Display the qualification_name instead of qualification_id
+                }),
                 Tables\Columns\TextColumn::make('region_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('institution_name')
