@@ -25,4 +25,21 @@ class Qualification extends Model
         // Chain fluent methods for configuration options
     }
 
+    public function egacs()
+    {
+        return $this->hasMany(Egac::class);
+    }
+
+    public function user()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function requests()
+{
+    return $this->hasMany(Request::class);
+}
+
+
+
 }

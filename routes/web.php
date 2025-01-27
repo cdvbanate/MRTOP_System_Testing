@@ -19,3 +19,8 @@ Route::get('/', function () {
     Mail::to('carlobanatesample@gmail.com')->send(new MRTOP());
     return 'Email sent!';
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+

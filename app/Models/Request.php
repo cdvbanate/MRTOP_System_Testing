@@ -51,10 +51,18 @@ class Request extends Model
             return $this->BelongsTo(User::class);
         }
 
-        public function qualification():BelongsTo
+        public function qualification()
         {
             return $this->belongsTo(Qualification::class);
         }
+        
+
+        public function egacs()
+        {
+            return $this->hasMany(Egac::class);
+        }
+
+        
 
 
         protected static function booted()
